@@ -4,19 +4,23 @@ import { useRouter } from "next/navigation"
 const NavBar = () => {
     const router = useRouter()
 
-
     const handleLogin = () =>{
         console.log("login clicked")
-        router.push('/login')
+        router.push('../../login')
     }
+
+    const handleHome = () =>{
+        router.push('../')
+    }
+
     return (
         <nav
-            className="relative flex w-full flex-wrap items-center justify-between bg-[#FFF4E1] py-2 shadow-dark-mild lg:py-2">
+            className="flex w-full flex-wrap items-center justify-between bg-[#FFF4E1] py-2 shadow-dark-mild lg:py-2 fixed z-50">
             <div className="flex w-full flex-row items-center justify-between px-3">
-                <span className="ms-2 text-m md:text-xl text-black whitespace-nowrap">Mise at Home</span>
+                <span className="ms-2 text-m md:text-xl text-black whitespace-nowrap" onClick={handleHome}>Mise at Home</span>
                 <div className="w-full flex justify-end">
                     <div className="ms-5 hidden m w-[30%] items-center justify-center me-5 md:flex">
-                        <input
+                        <input 
                             type="search"
                             className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-surface transition duration-300 ease-in-out focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none motion-reduce:transition-none "
                             placeholder="Search"

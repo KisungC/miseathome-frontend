@@ -32,7 +32,7 @@ export default function RootLayout({
       >
         <StoreProvider>
         <NavBar/>
-        {children}
+        <main className="pt-14">{children}</main>
         </StoreProvider>
       </body>
     </html>

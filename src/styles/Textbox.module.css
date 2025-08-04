@@ -1,0 +1,11 @@
+.textbox {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    border: 2px solid #ccc;
+    border-radius: 0.375rem;
+    /* rounded-md */
+    transition: border-color 0.3s ease;
+    outline: none;
+    box-sizing: border-box;
+}
