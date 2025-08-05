@@ -1,26 +1,113 @@
+"use client"
 import Textbox from "@/components/common/Textbox/Textbox"
 import Select from "@/components/common/Select/Select"
+import { SubmitHandler, useForm } from "react-hook-form"
+import { signupDTO } from "@/types/auth"
 
 const signup = () => {
+    const {
+        register,
+        handleSubmit,
+        watch,
+        formState: { errors }
+    } = useForm<signupDTO>({
+        defaultValues: {
+            email: '',
+            password1: '',
+            password2: '',
+            username: '',
+            firstname: '',
+            lastname: '',
+            cookingSkill: 'Choose a Cooking Skill'
+        },
+        criteriaMode: "all",
+        shouldFocusError: true
+    })
+
+    const onSubmit: SubmitHandler<signupDTO> = (data) => {
+        try{
+
+        }
+        catch(err){
+
+        }
+        console.log("Form data:", data)
+    }
+
     return (
         <>
-        <div className="w-dvw h-dvh flex justify-center items-center border-2">
-            <div className="max-md: w-lg ">
-                <h1>signup</h1>
-                <Textbox className="my-1" placeholder="example@example.com" title="Email" />
-                <Textbox className="my-1" placeholder="Password" title="Password" type="password" />
-                <Textbox className="my-1" placeholder="Password Confirmation" title="Password Confirmation" type="password" />
-                <Textbox className="my-1" placeholder="Password Confirmation" title="Username" type="password" />
-                <Textbox className="my-1" placeholder="Password Confirmation" title="First Name" type="password" />
-                <Textbox className="my-1" placeholder="Password Confirmation" title="Last Name" type="password" />
-                <Select title="Cooking Skill">
-                    <option selected>Choose a Cooking Skill</option>
-                    <option value="Beginner">Beginner</option>
-                    <option value="Home Cook">Home Cook</option>
-                    <option value="Professional">Professional</option>
-                </Select>
+            <div className="w-full sm:h-[calc(100vh-2.5rem)] h-[calc(100vh-4rem)] flex justify-center  items-center">
+                <div className="w-full max-w-lg m-5">
+                    <h1>signup</h1>
+                    <form onSubmit={handleSubmit(onSubmit)}>
+                        <Textbox className="my-1" placeholder="example@example.com" title="Email" error={errors.email?.message} {...register("email", {
+                            required: "Email is required.",
+                            pattern: {
+                                value: /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+                                message: "Please enter a valid email."
+                            },
+                        })} />
+                        <Textbox className="my-1" placeholder="Password" title="Password" type="password" error={errors.password1?.message} {...register("password1", {
+                            required: "Password is required.",
+                            minLength: {
+                                value: 8,
+                                message: "Password must be longer than 8 characters."
+                            },
+                            maxLength: {
+                                value: 128,
+                                message: "Password must be less than 128 characters."
+                            },
+                            pattern: {
+                                value: /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,128}$/,
+                                message: "Password must contain at least one uppercase letter, one lowercase letter, one number, and one special character."
+                            }
+                        })} />
+                        <Textbox className="my-1" placeholder="Password Confirmation" title="Password Confirmation" type="password" error={errors.password2?.message} {...register("password2", {
+                            required: "Password Confirmation is required.",
+                            validate:
+                                password2 => password2 === watch("password1") || "Passwords do not match"
+                        })} />
+                        <Textbox className="my-1" placeholder="Username" title="Username" error={errors.username?.message} {...register("username", {
+                            required: "Username is required.",
+                            minLength: {
+                                value: 3,
+                                message: "Username has to be more than 3 characters."
+                            },
+                            maxLength: {
+                                value: 38,
+                                message: "Username has to be less than 38 characters."
+                            }
+                        })} />
+                        <Textbox className="my-1" placeholder="First Name" title="First Name" error={errors.firstname?.message} {...register("firstname", {
+                            required: "First name is required.",
+                            maxLength: {
+                                value: 50,
+                                message: "First name has to be lass than 50 characters"
+                            }
+                        })} />
+                        <Textbox className="my-1" placeholder="Last Name" title="Last Name" error={errors.lastname?.message} {...register("lastname", {
+                            required: "Last name is required.",
+                            maxLength: {
+                                value: 50,
+                                message: "Last name has to be lass than 50 characters"
+                            }
+                        })} />
+                        <Select title="Cooking Skill" error={errors.cookingSkill?.message} {...register("cookingSkill",{
+                            validate: value => value !== "Choose a Cooking Skill" || "Please select a valid skill"
+                        })}>
+                            <option defaultValue={"Choose a Cooking Skill"}>Choose a Cooking Skill</option>
+                            <option value="Beginner">Beginner</option>
+                            <option value="Home Cook">Home Cook</option>
+                            <option value="Professional">Professional</option>
+                        </Select>
 
-            </div>
+                        <div className="flex justify-center items-center sm:justify-end border-2">
+                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4 w-full sm:w-auto ">
+                                Sign up
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
         </>
     )

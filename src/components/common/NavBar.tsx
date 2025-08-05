@@ -19,7 +19,7 @@ const NavBar = () => {
             <div className="flex w-full flex-row items-center justify-between px-3">
                 <span className="ms-2 text-m md:text-xl text-black whitespace-nowrap" onClick={handleHome}>Mise at Home</span>
                 <div className="w-full flex justify-end">
-                    <div className="ms-5 hidden m w-[30%] items-center justify-center me-5 md:flex">
+                    <div className="ms-5 hidden w-[30%] items-center justify-center me-5 md:flex">
                         <input 
                             type="search"
                             className="relative m-0 block w-[1px] min-w-0 flex-auto rounded border border-solid border-secondary-500 bg-transparent bg-clip-padding px-3 py-1.5 text-base font-normal text-surface transition duration-300 ease-in-out focus:border-primary focus:text-gray-700 focus:shadow-inset focus:outline-none motion-reduce:transition-none "
