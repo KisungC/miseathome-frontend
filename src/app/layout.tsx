@@ -4,6 +4,7 @@ import "../styles/globals.css";
 import NavBar from "../components/common/NavBar"
 import { makeStore } from "@/store/store";
 import StoreProvider from "../components/common/StoreProvider";
+import LayoutWrapper from "@/components/common/LayoutWrapper";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -36,8 +37,9 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <StoreProvider>
-        <NavBar/>
-        <main className="pt-14">{children}</main>
+          <LayoutWrapper>{children}</LayoutWrapper>
+        {/* <NavBar/>
+        <main className="pt-14">{children}</main> */}
         </StoreProvider>
       </body>
     </html>

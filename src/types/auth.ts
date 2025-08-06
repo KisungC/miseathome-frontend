@@ -1,9 +1,10 @@
-export type signupDTO = {
+export type SignupDTO = {
     email: string,
-    password1: string,
-    password2: string,
+    password: string,
     username: string,
     firstname: string,
     lastname: string,
-    cookingSkill: 'Beginner' | 'Home Cook' | 'Professional' | 'Choose a Cooking Skill'
+    skillLevel: 'Beginner' | 'Home Cook' | 'Professional' | 'Choose a Cooking Skill'
 }
+
+

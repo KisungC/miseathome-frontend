@@ -2,43 +2,66 @@
 import Textbox from "@/components/common/Textbox/Textbox"
 import Select from "@/components/common/Select/Select"
 import { SubmitHandler, useForm } from "react-hook-form"
-import { signupDTO } from "@/types/auth"
+import { SignupDTO } from "@/types/auth"
+import { useSignupMutation } from "@/store/api/authApi"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 
-const signup = () => {
+type SignupError = {
+  status: number;
+  data?: {
+    message?: string;
+    [key: string]: any;
+  };
+};
+
+
+const Signup = () => {
+
+    const [doSignup, { error, isLoading, data: currentData }] = useSignupMutation()
+    const [errorMsg, setErrorMsg] = useState('')
+    const router = useRouter()
+
     const {
         register,
         handleSubmit,
         watch,
         formState: { errors }
-    } = useForm<signupDTO>({
+    } = useForm<SignupDTO & { password2: string }>({
         defaultValues: {
             email: '',
-            password1: '',
+            password: '',
             password2: '',
             username: '',
             firstname: '',
             lastname: '',
-            cookingSkill: 'Choose a Cooking Skill'
+            skillLevel: 'Choose a Cooking Skill'
         },
         criteriaMode: "all",
         shouldFocusError: true
     })
 
-    const onSubmit: SubmitHandler<signupDTO> = (data) => {
-        try{
+    const onSubmit: SubmitHandler<SignupDTO & { password2: string }> = async(data) => {
+        setErrorMsg('');
+        try {
+            const {password2, ...rest} = data
+            const result = await doSignup(rest).unwrap()
 
+            console.log(result)
+            // e.g. redirect on success:
+            router.replace("./verify-sent")
+        } catch (err) {
+            const error = err as SignupError
+            console.error(error)
+            setErrorMsg(error.data?.error || "Signup failed")
         }
-        catch(err){
-
-        }
-        console.log("Form data:", data)
     }
 
     return (
         <>
-            <div className="w-full sm:h-[calc(100vh-2.5rem)] h-[calc(100vh-4rem)] flex justify-center  items-center">
+            <div className="w-full h-dvh flex justify-center items-center border">
                 <div className="w-full max-w-lg m-5">
-                    <h1>signup</h1>
+                    <h1>Sign Up</h1>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Textbox className="my-1" placeholder="example@example.com" title="Email" error={errors.email?.message} {...register("email", {
                             required: "Email is required.",
@@ -47,7 +70,7 @@ const signup = () => {
                                 message: "Please enter a valid email."
                             },
                         })} />
-                        <Textbox className="my-1" placeholder="Password" title="Password" type="password" error={errors.password1?.message} {...register("password1", {
+                        <Textbox className="my-1" placeholder="Password" title="Password" type="password" error={errors.password?.message} {...register("password", {
                             required: "Password is required.",
                             minLength: {
                                 value: 8,
@@ -65,7 +88,7 @@ const signup = () => {
                         <Textbox className="my-1" placeholder="Password Confirmation" title="Password Confirmation" type="password" error={errors.password2?.message} {...register("password2", {
                             required: "Password Confirmation is required.",
                             validate:
-                                password2 => password2 === watch("password1") || "Passwords do not match"
+                                password2 => password2 === watch("password") || "Passwords do not match"
                         })} />
                         <Textbox className="my-1" placeholder="Username" title="Username" error={errors.username?.message} {...register("username", {
                             required: "Username is required.",
@@ -92,7 +115,7 @@ const signup = () => {
                                 message: "Last name has to be lass than 50 characters"
                             }
                         })} />
-                        <Select title="Cooking Skill" error={errors.cookingSkill?.message} {...register("cookingSkill",{
+                        <Select title="Cooking Skill" error={errors.skillLevel?.message} {...register("skillLevel", {
                             validate: value => value !== "Choose a Cooking Skill" || "Please select a valid skill"
                         })}>
                             <option defaultValue={"Choose a Cooking Skill"}>Choose a Cooking Skill</option>
@@ -101,11 +124,12 @@ const signup = () => {
                             <option value="Professional">Professional</option>
                         </Select>
 
-                        <div className="flex justify-center items-center sm:justify-end border-2">
-                            <button type="submit" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4 w-full sm:w-auto ">
-                                Sign up
+                        <div className="flex justify-center items-center sm:justify-end">
+                            <button type="submit" disabled={isLoading} className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded m-4 w-full sm:w-auto ">
+                                {isLoading ? "Signing up…" : "Sign up"}
                             </button>
                         </div>
+                        {errorMsg && <p className="text-red-500 text-sm mt-1">{errorMsg}</p>}
                     </form>
                 </div>
             </div>
@@ -113,4 +137,4 @@ const signup = () => {
     )
 }
 
-export default signup
+export default Signup
