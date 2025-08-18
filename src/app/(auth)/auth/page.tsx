@@ -10,10 +10,6 @@ const AuthToken = () =>{
 
     //send POST request with token
 
-    useEffect(()=>{
-
-    })
-
     return(
         <>
         </>

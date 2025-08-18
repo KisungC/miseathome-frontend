@@ -22,8 +22,8 @@ export const metadata: Metadata = {
 };
 
 export const viewport = {
-  width:'device-width',
-  initialScale : 1,
+  width: 'device-width',
+  initialScale: 1,
 }
 
 export default function RootLayout({
@@ -38,9 +38,11 @@ export default function RootLayout({
       >
         <StoreProvider>
           <LayoutWrapper>{children}</LayoutWrapper>
-        {/* <NavBar/>
+          {/* <NavBar/>
         <main className="pt-14">{children}</main> */}
         </StoreProvider>
+      <script src="https://cdn.jsdelivr.net/npm/eruda"></script>
+      <script>eruda.init();</script>
       </body>
     </html>
   );

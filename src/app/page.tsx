@@ -1,12 +1,11 @@
+"use client"
 import Image from "next/image";
 import landingPage from '../../assets/landing_page.png'
 
 export default function Home() {
 
-
   return (
     <>
-
       <div className="w-full flex justify-center">
         <div className=" relative w-full h-[80vh] overflow-hidden">
           <Image
@@ -25,7 +24,7 @@ export default function Home() {
             }}
           />
 
-          <div className="absolute inset-0 bottom flex items-center justify-center z-11">
+          <div className="absolute inset-0 flex items-center justify-center z-11">
             <h1 className="text-white text-xl sm:text-3xl md:text-5xl font-bold text-center text-shadow">
               Mise at Home
             </h1>

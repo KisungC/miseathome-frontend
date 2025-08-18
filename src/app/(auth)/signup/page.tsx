@@ -4,20 +4,20 @@ import Select from "@/components/common/Select/Select"
 import { SubmitHandler, useForm } from "react-hook-form"
 import { SignupDTO } from "@/types/auth"
 import { useSignupMutation } from "@/store/api/authApi"
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import ClientOnly from "@/components/common/ClientOnly"
 
 type SignupError = {
-  status: number;
-  data?: {
-    message?: string;
-    [key: string]: any;
-  };
+    status: number;
+    data?: {
+        message?: string;
+        [key: string]: any;
+    };
 };
 
 
 const Signup = () => {
-
     const [doSignup, { error, isLoading, data: currentData }] = useSignupMutation()
     const [errorMsg, setErrorMsg] = useState('')
     const router = useRouter()
@@ -41,10 +41,10 @@ const Signup = () => {
         shouldFocusError: true
     })
 
-    const onSubmit: SubmitHandler<SignupDTO & { password2: string }> = async(data) => {
+    const onSubmit: SubmitHandler<SignupDTO & { password2: string }> = async (data) => {
         setErrorMsg('');
         try {
-            const {password2, ...rest} = data
+            const { password2, ...rest } = data
             const result = await doSignup(rest).unwrap()
 
             console.log(result)
@@ -58,9 +58,10 @@ const Signup = () => {
     }
 
     return (
-        <>
+        <ClientOnly>
             <div className="w-full h-dvh flex justify-center items-center border">
-                <div className="w-full max-w-lg m-5">
+                <div
+                    className={`w-full h-auto max-w-lg m-5 pt-20`}>
                     <h1>Sign Up</h1>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Textbox className="my-1" placeholder="example@example.com" title="Email" error={errors.email?.message} {...register("email", {
@@ -132,8 +133,8 @@ const Signup = () => {
                         {errorMsg && <p className="text-red-500 text-sm mt-1">{errorMsg}</p>}
                     </form>
                 </div>
-            </div>
-        </>
+            </div >
+        </ClientOnly>
     )
 }
 
