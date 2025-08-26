@@ -49,7 +49,7 @@ const Signup = () => {
 
             console.log(result)
             // e.g. redirect on success:
-            router.replace("./verify-sent")
+            router.replace("/signup/verify-sent")
         } catch (err) {
             const error = err as SignupError
             console.error(error)
@@ -59,9 +59,9 @@ const Signup = () => {
 
     return (
         <ClientOnly>
-            <div className="w-full h-dvh flex justify-center items-center border">
+            <div className="w-full min-h-screen flex justify-center items-center">
                 <div
-                    className={`w-full h-auto max-w-lg m-5 pt-20`}>
+                    className={`w-full h-auto max-w-lg m-5 pt-10`}>
                     <h1>Sign Up</h1>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Textbox className="my-1" placeholder="example@example.com" title="Email" error={errors.email?.message} {...register("email", {
